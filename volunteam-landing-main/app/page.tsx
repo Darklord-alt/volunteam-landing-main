@@ -83,18 +83,23 @@ export default function VolunteamLanding() {
 
       {/* BACKGROUND + RADAR FEATURE */}
       <div className="fixed inset-0 pointer-events-none">
-        {/* NEW: Interactive Spotlight Layer */}
+        {/* Interactive Spotlight Layer */}
         <motion.div
           style={{
-            background: `radial-gradient(600px circle at ${springX}px ${springY}px, rgba(73, 193, 199, 0.08), transparent 80%)`,
+            background: `radial-gradient(800px circle at ${springX}px ${springY}px, rgba(73, 193, 199, 0.12), transparent 70%)`,
           }}
           className="absolute inset-0 z-0"
         />
 
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150" />
-        <div className="absolute top-[-10%] left-[-10%] width-[80%] md:width-[40%] h-[40%] bg-[#49C1C7]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] width-[80%] md:width-[40%] h-[40%] bg-[#EEAB40]/10 blur-[120px] rounded-full" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] brightness-100 contrast-150" />
+        {/* Top-left cyan glow */}
+        <div className="absolute top-[-15%] left-[-15%] w-[70%] md:w-[45%] h-[50%] bg-[#49C1C7]/[0.12] blur-[150px] rounded-full" />
+        {/* Bottom-right gold glow */}
+        <div className="absolute bottom-[-15%] right-[-15%] w-[70%] md:w-[45%] h-[50%] bg-[#EEAB40]/[0.08] blur-[150px] rounded-full" />
+        {/* Center hero glow */}
+        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#49C1C7]/[0.06] blur-[120px] rounded-full" />
+        {/* Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff06_1px,transparent_1px),linear-gradient(to_bottom,#ffffff06_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -111,28 +116,64 @@ export default function VolunteamLanding() {
           <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
 
             {/* NAV BAR */}
-            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-4 md:px-6 py-4 md:py-6 ${scrolled ? 'translate-y-[-5px]' : ''}`}>
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-4 md:px-6 ${scrolled ? 'py-2' : 'py-3 md:py-5'}`}>
               <motion.div
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ type: "spring", stiffness: 100 }}
-                className={`max-w-7xl mx-auto flex justify-between items-center transition-all duration-500 px-6 py-4 rounded-3xl border ${scrolled || mobileMenuOpen ? 'bg-[#0B354D]/60 backdrop-blur-xl border-white/20 shadow-2xl' : 'bg-transparent border-transparent'}`}
+                className={`max-w-6xl mx-auto flex justify-between items-center relative transition-all duration-500 rounded-full border ${scrolled ? 'px-5 py-2.5 bg-[#0B1E2D]/70 backdrop-blur-2xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]' : 'px-6 py-3.5 bg-[#0B1E2D]/40 backdrop-blur-xl border-white/[0.06]'}`}
               >
-                <Link href="/" className="flex items-center gap-4 group">
-                  <motion.img whileHover={{ rotate: 180 }} src="/logo.png" alt="Logo" className="w-16 h-16 md:w-24 md:h-24 object-contain" />
-                  <span className="text-xl font-black text-white tracking-tighter uppercase">VOLUNTEAM</span>
+                <Link href="/" className="flex items-center gap-2.5 group">
+                  <motion.img
+                    whileHover={{ rotate: 180 }}
+                    transition={{ duration: 0.5 }}
+                    src="/img-removebg-preview.png"
+                    alt="Logo"
+                    className={`object-contain transition-all duration-500 ${scrolled ? 'w-10 h-10 md:w-11 md:h-11' : 'w-11 h-11 md:w-14 md:h-14'}`}
+                  />
+                  <span className={`font-black text-white tracking-tight uppercase transition-all duration-500 ${scrolled ? 'text-sm' : 'text-base md:text-lg'}`}>Volunteam</span>
                 </Link>
 
-                <div className="flex items-center gap-4">
+                {/* Centered Nav Links */}
+                <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+                  {[
+                    { label: 'About', action: () => setActiveOverlay('story') },
+                    { label: 'Showcase', href: '#showcase' },
+                    { label: 'Blog', href: '#blog' },
+                    { label: 'FAQ', action: () => setActiveOverlay('faq') },
+                  ].map((item) => (
+                    item.href ? (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        className="relative px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-gray-400 hover:text-white transition-colors duration-300 group"
+                      >
+                        {item.label}
+                        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-0 group-hover:w-4 h-[2px] bg-[#49C1C7] rounded-full transition-all duration-300" />
+                      </a>
+                    ) : (
+                      <button
+                        key={item.label}
+                        onClick={item.action}
+                        className="relative px-4 py-2 text-[11px] font-semibold uppercase tracking-widest text-gray-400 hover:text-white transition-colors duration-300 group"
+                      >
+                        {item.label}
+                        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-0 group-hover:w-4 h-[2px] bg-[#49C1C7] rounded-full transition-all duration-300" />
+                      </button>
+                    )
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3">
                   {/* Desktop Portal Buttons */}
-                  <div className="hidden md:flex items-center gap-4">
+                  <div className="hidden md:flex items-center gap-2.5">
                     <Link href="/login/volunteer">
-                      <button className="border border-[#49C1C7]/30 bg-[#49C1C7]/5 text-white px-5 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#49C1C7] hover:text-[#01121C] transition-all">
+                      <button className="border border-[#49C1C7]/20 bg-[#49C1C7]/[0.08] text-[#49C1C7] px-5 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-[#49C1C7]/20 hover:border-[#49C1C7]/40 hover:shadow-[0_0_20px_rgba(73,193,199,0.15)] transition-all duration-300">
                         Volunteer
                       </button>
                     </Link>
                     <Link href="/login/nonprofit">
-                      <button className="bg-white text-[#01121C] px-5 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-[#EEAB40] transition-all">
+                      <button className="bg-white/90 text-[#01121C] px-5 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-[#EEAB40] hover:shadow-[0_0_20px_rgba(238,171,64,0.2)] transition-all duration-300">
                         Nonprofit
                       </button>
                     </Link>
@@ -141,9 +182,9 @@ export default function VolunteamLanding() {
                   {/* Mobile Menu Toggle */}
                   <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    className="md:hidden w-10 h-10 flex items-center justify-center text-white"
+                    className="md:hidden w-9 h-9 flex items-center justify-center text-white rounded-full hover:bg-white/10 transition-colors"
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       {mobileMenuOpen ? (
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                       ) : (
@@ -194,32 +235,69 @@ export default function VolunteamLanding() {
             </AnimatePresence>
 
             {/* HERO SECTION */}
-            <section className="relative pt-48 pb-20 px-6 text-center">
-              <motion.div initial="initial" animate="animate" className="max-w-6xl mx-auto">
+            <section className="relative pt-44 md:pt-52 pb-24 px-6 text-center">
+              {/* Hero glow accent */}
+              <div className="absolute top-32 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#49C1C7]/[0.04] blur-[100px] rounded-full pointer-events-none" />
+
+              <motion.div initial="initial" animate="animate" className="max-w-6xl mx-auto relative">
                 <motion.div
                   variants={fadeInUp}
-                  className="inline-block px-4 py-1.5 rounded-full border border-[#49C1C7]/30 bg-[#49C1C7]/5 text-[#49C1C7] text-[9px] font-black uppercase tracking-[0.3em] mb-8"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[#49C1C7]/30 bg-[#49C1C7]/5 text-[#49C1C7] text-[9px] font-black uppercase tracking-[0.3em] mb-10"
                 >
-
-
+                  <span className="w-1.5 h-1.5 bg-[#49C1C7] rounded-full animate-pulse" />
+                  Now Connecting Volunteers Worldwide
                 </motion.div>
 
-                <motion.h1 variants={fadeInUp} className="text-3xl md:text-7xl font-black mb-8 leading-[0.95] tracking-tighter uppercase">
+                <motion.h1 variants={fadeInUp} className="text-4xl md:text-8xl font-black mb-8 leading-[0.92] tracking-tighter uppercase">
                   Where <span className="text-[#EEAB40]">Skills Meet</span> <br />
-                  <div className="mt-4 md:mt-6 relative inline-block">
-                    <span>Purpose</span>
-                    <span className="absolute bottom-4 left-0 w-full h-2 bg-[#49C1C7]/20 -z-10" />
-                  </div>
+                  <span className="mt-4 md:mt-6 relative inline-block">
+                    <span className="bg-gradient-to-r from-[#49C1C7] to-[#49C1C7]/70 bg-clip-text text-transparent">Purpose</span>
+                    <motion.span
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute -bottom-1 md:bottom-2 left-0 w-full h-1 md:h-1.5 bg-gradient-to-r from-[#49C1C7] to-[#EEAB40] rounded-full origin-left"
+                    />
+                  </span>
                 </motion.h1>
 
-                <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-sm md:text-lg mb-12 font-medium italic">
-                  "The bridge between Volunteers and high-impact nonprofits."
+                <motion.p variants={fadeInUp} className="text-gray-400 max-w-2xl mx-auto text-sm md:text-lg mb-12 font-medium">
+                  The bridge between <span className="text-white/80">Volunteers</span> and <span className="text-white/80">high-impact nonprofits</span>.
                 </motion.p>
+
+                {/* CTA Buttons */}
+                <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4 mb-16">
+                  <Link href="/login/volunteer">
+                    <button className="group relative bg-[#49C1C7] text-[#01121C] px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:shadow-[0_0_40px_rgba(73,193,199,0.3)] transition-all duration-300 hover:scale-[1.02]">
+                      Start Volunteering
+                      <span className="absolute inset-0 rounded-2xl bg-white/0 group-hover:bg-white/10 transition-all" />
+                    </button>
+                  </Link>
+                  <Link href="/login/nonprofit">
+                    <button className="border border-white/20 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:border-[#EEAB40]/50 hover:text-[#EEAB40] hover:shadow-[0_0_30px_rgba(238,171,64,0.1)] transition-all duration-300">
+                      Post a Mission
+                    </button>
+                  </Link>
+                </motion.div>
+
+                {/* Stats row */}
+                <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-8 md:gap-16">
+                  {[
+                    { value: '1,200+', label: 'Volunteers' },
+                    { value: '340+', label: 'Missions Completed' },
+                    { value: '50+', label: 'Nonprofits' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="text-center">
+                      <div className="text-2xl md:text-3xl font-black text-white tracking-tight">{stat.value}</div>
+                      <div className="text-[9px] font-black uppercase tracking-widest text-gray-500 mt-1">{stat.label}</div>
+                    </div>
+                  ))}
+                </motion.div>
               </motion.div>
             </section>
 
             {/* PLATFORM SHOWCASE GALLERY */}
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-[100vw] mx-auto mb-32 -mt-10 relative z-20">
+            <motion.div id="showcase" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-[100vw] mx-auto mb-32 -mt-10 relative z-20">
               <Gallery />
             </motion.div>
 
@@ -260,10 +338,10 @@ export default function VolunteamLanding() {
                     </button>
                   </motion.div>
                   <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="relative h-[400px] rounded-[3rem] border border-white/10 overflow-hidden group">
-                    {/* Background Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#49C1C7]/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
-                    {/* Decorative Matrix Grid */}
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:20px_20px]" />
+                    {/* Background Image */}
+                    <img src="/blueprint.png" alt="Volunteam collaboration" className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700" />
+                    {/* Overlay Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#01121C] via-[#01121C]/40 to-transparent" />
                     <div className="absolute bottom-8 left-8 right-8 p-6 bg-[#01121C]/80 backdrop-blur-md rounded-2xl border border-white/10">
                       <div className="text-[10px] font-black text-[#EEAB40] uppercase tracking-widest mb-2">Systems Online</div>
                       <div className="text-white font-medium text-sm">Connecting 1,000+ specialized endpoints globally.</div>
@@ -274,7 +352,7 @@ export default function VolunteamLanding() {
             </section>
 
             {/* LATEST TRANSMISSIONS (BLOG) */}
-            <section className="max-w-7xl mx-auto px-6 py-32 relative z-10">
+            <section id="blog" className="max-w-7xl mx-auto px-6 py-32 relative z-10">
               <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                 <div>
                   <h3 className="text-[#49C1C7] text-[10px] font-black uppercase tracking-[0.3em] mb-4">Signal Feeds</h3>
@@ -292,12 +370,13 @@ export default function VolunteamLanding() {
                   { tag: "Platform Update", title: "Release v.2.4: Encrypted Messaging", date: "FEB 15, 2026" }
                 ].map((post, i) => (
                   <motion.div key={i} whileHover={{ y: -10 }} className="group cursor-pointer">
-                    <div className="h-48 rounded-3xl bg-white/5 border border-white/10 mb-6 relative overflow-hidden">
-                      {/* Placeholder Visuals for Blog */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#01121C] to-transparent z-10" />
-                      <div className={`absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity bg-[url('https://grainy-gradients.vercel.app/noise.svg')]`} />
-                      {i === 0 && <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#49C1C7]/20 rounded-full blur-xl" />}
-                      {i === 1 && <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-[#EEAB40]/20 rounded-full blur-xl" />}
+                    <div className="h-48 rounded-3xl border border-white/10 mb-6 relative overflow-hidden">
+                      <img
+                        src={['/blog-engineering.png', '/blog-impact.png', '/blog-platform.png'][i]}
+                        alt={post.title}
+                        className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#01121C] via-[#01121C]/30 to-transparent z-10" />
                     </div>
                     <div className="flex items-center gap-4 mb-3">
                       <span className="text-[9px] font-black text-[#49C1C7] uppercase tracking-widest">{post.tag}</span>
@@ -338,57 +417,85 @@ export default function VolunteamLanding() {
                   </div>
                 </div>
               </div>
-            </section>            {/* CLEAN FOOTER */}
-            {/* FOOTER */}
-            <footer className="bg-[#01121C] border-t border-white/10 text-white py-16 px-6 relative z-10">
-              <div className="max-w-7xl mx-auto flex flex-col gap-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-3">
-                      <img src="/logo.png" alt="Logo" className="w-8 h-8 opacity-50" />
-                      <span className="text-sm font-black tracking-widest uppercase text-white/50">VOLUNTEAM</span>
+            </section>            {/* FOOTER */}
+            <footer className="bg-[#01121C] border-t border-white/10 text-white pt-20 pb-8 px-6 relative z-10">
+              <div className="max-w-7xl mx-auto">
+                {/* Top Section — 4 columns */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16 mb-16">
+                  {/* Brand */}
+                  <div className="col-span-2 md:col-span-1">
+                    <div className="flex items-center gap-3 mb-4">
+                      <img src="/img-removebg-preview.png" alt="Logo" className="w-10 h-10" />
+                      <span className="text-base font-black tracking-widest uppercase">VOLUNTEAM</span>
                     </div>
-                    <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Where Skills Meet Purpose</p>
+                    <p className="text-sm text-gray-500 leading-relaxed mb-6">Where skills meet purpose. Connecting world-class talent with high-impact nonprofits.</p>
+                    {/* Social Icons */}
+                    <div className="flex items-center gap-4">
+                      <Link href="https://instagram.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all hover:scale-110">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                      </Link>
+                      <Link href="https://twitter.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all hover:scale-110">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                      </Link>
+                      <Link href="https://linkedin.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all hover:scale-110">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                          <rect x="2" y="9" width="4" height="12"></rect>
+                          <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Platform */}
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#49C1C7] mb-5">Platform</h4>
+                    <ul className="space-y-3">
+                      <li><Link href="/login/volunteer" className="text-sm text-gray-500 hover:text-white transition-colors">Volunteer Portal</Link></li>
+                      <li><Link href="/login/nonprofit" className="text-sm text-gray-500 hover:text-white transition-colors">Nonprofit Portal</Link></li>
+                      <li><a href="#showcase" className="text-sm text-gray-500 hover:text-white transition-colors">Showcase</a></li>
+                      <li><a href="#blog" className="text-sm text-gray-500 hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                  </div>
+
+                  {/* Company */}
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#EEAB40] mb-5">Company</h4>
+                    <ul className="space-y-3">
+                      <li><button onClick={() => setActiveOverlay('story')} className="text-sm text-gray-500 hover:text-white transition-colors">Our Story</button></li>
+                      <li><button onClick={() => setActiveOverlay('faq')} className="text-sm text-gray-500 hover:text-white transition-colors">FAQ</button></li>
+                      <li><button onClick={() => setActiveOverlay('privacy')} className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</button></li>
+                      <li><button onClick={() => setActiveOverlay('terms')} className="text-sm text-gray-500 hover:text-white transition-colors">Terms of Use</button></li>
+                    </ul>
+                  </div>
+
+                  {/* Connect */}
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white/40 mb-5">Connect</h4>
+                    <ul className="space-y-3">
+                      <li><button onClick={() => setActiveOverlay('contact')} className="text-sm text-gray-500 hover:text-white transition-colors">Contact Us</button></li>
+                      <li><a href="mailto:randa@volunteam.ca" className="text-sm text-gray-500 hover:text-white transition-colors">randa@volunteam.ca</a></li>
+                    </ul>
                   </div>
                 </div>
 
-                <div className="h-px bg-white/5 w-full" />
+                {/* Divider */}
+                <div className="h-px bg-white/5 w-full mb-6" />
 
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                  <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-                    <button onClick={() => setActiveOverlay('privacy')} className="text-[10px] font-black uppercase text-gray-500">Privacy Policy</button>
-                    <button onClick={() => setActiveOverlay('terms')} className="text-[10px] font-black uppercase text-gray-500">Terms of Use</button>
-                  </div>
-
-                  <div className="flex items-center gap-6">
-                    {/* INSTAGRAM */}
-                    <Link href="https://instagram.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all transform hover:scale-110">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                      </svg>
-                    </Link>
-
-                    {/* X (TWITTER) */}
-                    <Link href="https://twitter.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all transform hover:scale-110">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-                      </svg>
-                    </Link>
-
-                    {/* LINKEDIN */}
-                    <Link href="https://linkedin.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all transform hover:scale-110">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                        <rect x="2" y="9" width="4" height="12"></rect>
-                        <circle cx="4" cy="4" r="2"></circle>
-                      </svg>
-                    </Link>
-
-                    <span className="text-[9px] font-black text-gray-800 uppercase tracking-widest ml-2">
-                      © 2026 All Rights Reserved
-                    </span>
+                {/* Bottom Row */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <span className="text-xs font-bold text-gray-700 uppercase tracking-widest">
+                    © 2026 Volunteam. All Rights Reserved.
+                  </span>
+                  <div className="flex gap-6">
+                    <button onClick={() => setActiveOverlay('privacy')} className="text-xs font-bold uppercase tracking-widest text-gray-700 hover:text-gray-400 transition-colors">Privacy</button>
+                    <button onClick={() => setActiveOverlay('terms')} className="text-xs font-bold uppercase tracking-widest text-gray-700 hover:text-gray-400 transition-colors">Terms</button>
                   </div>
                 </div>
               </div>

@@ -4,80 +4,137 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
-
 const LineDrawAnimation = ({ onComplete }: { onComplete?: () => void }) => {
-    const [stage, setStage] = useState('draw');
+    const [stage, setStage] = useState<'enter' | 'glow' | 'text' | 'exit'>('enter');
 
     useEffect(() => {
         const timers = [
-            setTimeout(() => setStage('reveal'), 1500),
-            setTimeout(() => setStage('glow'), 2500),
-            setTimeout(() => setStage('fade'), 3500),
-            setTimeout(() => onComplete?.(), 4000)
+            setTimeout(() => setStage('glow'), 600),
+            setTimeout(() => setStage('text'), 1300),
+            setTimeout(() => setStage('exit'), 2500),
+            setTimeout(() => onComplete?.(), 2900),
         ];
         return () => timers.forEach(clearTimeout);
     }, []);
 
+    const visible = stage !== 'exit';
+    const glowing = stage === 'glow' || stage === 'text';
+    const showText = stage === 'text';
+
     return (
         <AnimatePresence>
-            {stage !== 'fade' && (
+            {visible && (
                 <motion.div
-                    exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
-                    className="fixed inset-0 w-screen h-screen bg-[#01121C] flex flex-col justify-center items-center z-[9999]"
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                    className="fixed inset-0 z-[9999] flex items-center justify-center"
+                    style={{ background: '#000' }}
                 >
-                    <div className="relative flex flex-col items-center">
-                        {/* Glowing backdrop circle */}
+                    <div className="flex flex-col items-center">
+
+                        {/* Soft ambient glow — single, clean, centered */}
                         <motion.div
-                            initial={{ scale: 0, opacity: 0 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
                             animate={{
-                                scale: stage === 'glow' ? 2 : 1.5,
-                                opacity: stage === 'glow' ? 0.3 : 0.1
+                                opacity: glowing ? 0.35 : 0,
+                                scale: glowing ? 1 : 0.8,
                             }}
-                            transition={{ duration: 1.5, ease: "easeOut" }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 rounded-full bg-[#49C1C7] blur-[40px] pointer-events-none"
+                            transition={{ duration: 2, ease: [0.4, 0, 0.2, 1] }}
+                            className="absolute pointer-events-none"
+                            style={{
+                                width: 500,
+                                height: 500,
+                                borderRadius: '50%',
+                                background: 'radial-gradient(circle, rgba(73,193,199,0.25) 0%, transparent 65%)',
+                                filter: 'blur(40px)',
+                            }}
                         />
 
-                        {/* Logo Image */}
+                        {/* The Logo — simple, confident entrance */}
                         <motion.div
-                            initial={{ y: 20, opacity: 0, scale: 0.8 }}
-                            animate={{ y: 0, opacity: 1, scale: 1 }}
-                            transition={{ duration: 1, type: "spring", bounce: 0.4 }}
-                            className="relative z-10 p-6 md:p-8 rounded-full bg-[#01121C]/50 backdrop-blur-md border border-white/10 shadow-2xl"
+                            initial={{ opacity: 0, scale: 0.85, filter: 'blur(12px)' }}
+                            animate={{
+                                opacity: 1,
+                                scale: 1,
+                                filter: 'blur(0px)',
+                            }}
+                            transition={{
+                                duration: 1.4,
+                                ease: [0.25, 0.46, 0.45, 0.94],
+                            }}
                         >
-                            <div className="relative w-24 h-24 md:w-32 md:h-32">
+                            <div
+                                className="relative"
+                                style={{
+                                    width: 'clamp(120px, 25vw, 200px)',
+                                    height: 'clamp(120px, 25vw, 200px)',
+                                }}
+                            >
                                 <Image
-                                    src="/logo.png"
+                                    src="/img-removebg-preview.png"
                                     alt="Volunteam"
                                     fill
-                                    className="object-contain drop-shadow-[0_0_15px_rgba(73,193,199,0.5)]"
+                                    className="object-contain"
+                                    style={{
+                                        filter: glowing
+                                            ? 'drop-shadow(0 0 40px rgba(73,193,199,0.3))'
+                                            : 'none',
+                                        transition: 'filter 1s ease',
+                                    }}
+                                    priority
                                 />
                             </div>
                         </motion.div>
 
-                        {/* Title Text */}
-                        <motion.h1
-                            initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
-                            animate={{
-                                opacity: stage === 'glow' ? 1 : (stage === 'reveal' ? 0.8 : 0),
-                                y: 0,
-                                filter: 'blur(0px)'
-                            }}
-                            transition={{ duration: 0.8, delay: 0.3 }}
-                            className="mt-8 text-3xl md:text-5xl font-black text-white tracking-[0.2em] uppercase relative z-10"
-                        >
-                            VOLUNTEAM
-                        </motion.h1>
-
-                        {/* Subheading */}
+                        {/* Thin line separator */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: stage === 'glow' ? 1 : 0 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
-                            className="mt-4 text-[#EEAB40] text-xs font-black tracking-widest uppercase relative z-10"
-                        >
-                            <span className="inline-block border-t border-b border-[#EEAB40]/30 py-1 px-4">Initializing Systems</span>
-                        </motion.div>
+                            initial={{ scaleX: 0, opacity: 0 }}
+                            animate={{
+                                scaleX: showText ? 1 : 0,
+                                opacity: showText ? 1 : 0,
+                            }}
+                            transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                            className="mt-10"
+                            style={{
+                                width: 60,
+                                height: 1,
+                                background: 'rgba(255,255,255,0.2)',
+                            }}
+                        />
+
+                        {/* Title */}
+                        <div className="overflow-hidden mt-6">
+                            <motion.h1
+                                initial={{ y: '100%' }}
+                                animate={{ y: showText ? '0%' : '100%' }}
+                                transition={{
+                                    duration: 0.7,
+                                    ease: [0.25, 0.46, 0.45, 0.94],
+                                    delay: 0.15,
+                                }}
+                                className="text-xl md:text-3xl font-light uppercase text-white"
+                                style={{ letterSpacing: '0.4em' }}
+                            >
+                                Volunteam
+                            </motion.h1>
+                        </div>
+
+                        {/* Tagline */}
+                        <div className="overflow-hidden mt-2">
+                            <motion.p
+                                initial={{ y: '100%' }}
+                                animate={{ y: showText ? '0%' : '100%' }}
+                                transition={{
+                                    duration: 0.6,
+                                    ease: [0.25, 0.46, 0.45, 0.94],
+                                    delay: 0.35,
+                                }}
+                                className="text-[10px] md:text-xs uppercase text-white/30 font-light"
+                                style={{ letterSpacing: '0.3em' }}
+                            >
+                                Where Skills Meet Purpose
+                            </motion.p>
+                        </div>
                     </div>
                 </motion.div>
             )}
