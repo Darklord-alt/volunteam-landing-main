@@ -1,0 +1,179 @@
+/* Gallery.css */
+
+.gallery-section {
+    padding: 4rem 0;
+    background: transparent;
+    /* Changed to blend with page.tsx background */
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+.gallery-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 5%;
+}
+
+.gallery-title h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+}
+
+.gallery-title .highlight {
+    color: #49C1C7;
+    /* Changed from orange to blend with theme */
+}
+
+.gallery-title p {
+    color: #9ca3af;
+    /* Tailwind text-gray-400 equivalent */
+    font-size: 1.125rem;
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Infinite Scroll Container */
+.gallery-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 2rem 0;
+}
+
+/* Gradient overlays for smooth edges - Blended with #01121C */
+.gallery-container::before,
+.gallery-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 15rem;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.gallery-container::before {
+    left: 0;
+    background: linear-gradient(to right, #01121C, transparent);
+}
+
+.gallery-container::after {
+    right: 0;
+    background: linear-gradient(to left, #01121C, transparent);
+}
+
+/* Animation Track */
+.gallery-track {
+    display: flex;
+    gap: 2rem;
+    animation: scroll 30s linear infinite;
+    width: fit-content;
+}
+
+.gallery-track.paused {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Gallery Items */
+.gallery-item {
+    flex-shrink: 0;
+    width: 400px;
+    height: 280px;
+    border-radius: 2.5rem;
+    /* Matched 3rem theme from stats block */
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Matched border-white/10 */
+    background: rgba(255, 255, 255, 0.05);
+    /* Matched bg-white/5 */
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(73, 193, 199, 0.4);
+    /* Matched hover border */
+    box-shadow: 0 20px 60px rgba(73, 193, 199, 0.2);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    /* Dim image slightly to match dark aesthetic */
+    transition: opacity 0.3s;
+}
+
+.gallery-item:hover img {
+    opacity: 1;
+}
+
+/* Hover Overlay */
+.gallery-item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(1, 18, 28, 0.95), transparent);
+    /* Matches #01121C */
+    padding: 2rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-item-overlay {
+    transform: translateY(0);
+}
+
+.gallery-item-overlay h3 {
+    color: #49C1C7;
+    /* Matched to theme secondary color */
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+}
+
+.gallery-item-overlay p {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    /* text-sm equivalent */
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gallery-item {
+        width: 300px;
+        height: 210px;
+        border-radius: 2rem;
+    }
+
+    .gallery-title h2 {
+        font-size: 2rem;
+    }
+
+    .gallery-container::before,
+    .gallery-container::after {
+        width: 3rem;
+    }
+}

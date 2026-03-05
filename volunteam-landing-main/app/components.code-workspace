@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../../Lost and Found App (Community)/src/components"
+		},
+		{
+			"path": "../../../Lost and Found App (Community)/src/guidelines"
+		},
+		{
+			"path": "../../../Lost and Found App (Community)/src/styles"
+		},
+		{
+			"path": "../../../Lost and Found App (Community)/src/supabase"
+		},
+		{
+			"path": "../../../Lost and Found App (Community)/src/utils"
+		}
+	]
+}
