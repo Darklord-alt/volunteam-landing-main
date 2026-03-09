@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import LineDrawAnimation from '../components/LineDrawAnimation';
 import Gallery from '../components/Gallery';
+import CookieConsent from '../components/CookieConsent';
 
 export default function VolunteamLanding() {
   const [loading, setLoading] = useState(true);
@@ -403,7 +404,7 @@ export default function VolunteamLanding() {
                         Access FAQ
                       </button>
                       <button onClick={() => setActiveOverlay('contact')} className="border border-white/20 hover:border-white/50 bg-transparent text-white px-8 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">
-                        Contact Terminal
+                        Contact us
                       </button>
                     </div>
                   </div>
@@ -443,7 +444,7 @@ export default function VolunteamLanding() {
                           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
                         </svg>
                       </Link>
-                      <Link href="https://linkedin.com" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all hover:scale-110">
+                      <Link href="https://www.linkedin.com/company/volunteam/posts/?feedView=all" target="_blank" className="text-gray-600 hover:text-[#49C1C7] transition-all hover:scale-110">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                           <rect x="2" y="9" width="4" height="12"></rect>
@@ -780,6 +781,8 @@ export default function VolunteamLanding() {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            <CookieConsent />
 
             {/* CLOSING THE MAIN LANDING PAGE WRAPPER */}
           </motion.main>
